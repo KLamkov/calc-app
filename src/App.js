@@ -42,6 +42,15 @@ function App() {
 		}
 	}
 
+	const buttons = document.querySelectorAll('.keypad button');
+    const input = document.querySelector('.blinking-caret'); 
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            input.focus();
+        });
+    });
+
     return (
         <>
             <div className='container'>
