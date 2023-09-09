@@ -28,16 +28,18 @@ function KeypadHandler({ inputValue, setInputValue, calculate }) {
                 };
 
                 const lastChar = inputValue.slice(-1);
-                if (lastChar in operatorMap && pressedKey in operatorMap) {
-                    setInputValue(prevValue => prevValue.slice(0, -1));
+                const lastIsOperator = ['.', '+', '-', '×', '*', '/', '÷'].includes(lastChar);
+                const pressedIsOperator = ['.', '+', '-', '×', '*', '/', '÷'].includes(pressedKey);
+
+                if (lastIsOperator && pressedIsOperator) {
+                    return; // не додаємо новий оператор чи крапку якщо останній символ оператор чи крапка
                 }
 
-                const processedValue = operatorMap[pressedKey] || pressedKey;
-                setInputValue(prevValue => prevValue.concat(processedValue));
+                setInputValue(prevValue => prevValue.concat(operatorMap[pressedKey] || pressedKey));
             }
 
             if (e.key.length === 1 && !validKeys.includes(e.key)) {
-                e.preventDefault(); // Предотвращаем ввод недопустимых символов (букв)
+                e.preventDefault(); // не даємо вводити неприпустимі символи, літери
             }
         };
 

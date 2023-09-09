@@ -15,15 +15,22 @@ function App() {
     }, []); 
 
     const handleClick = (e) => {
-        const clickedValue = e.target.name;
-        const operatorMap = {
-            '/': '÷',
-            '*': '×'
-        };
-
-        const processedValue = operatorMap[clickedValue] || clickedValue;
-        setInputValue(prevValue => prevValue.concat(processedValue));
-    }
+		const clickedValue = e.target.name;
+		const operatorMap = {
+			'/': '÷',
+			'*': '×'
+		};
+	
+		const processedValue = operatorMap[clickedValue] || clickedValue;
+	
+		// перевірка останнього значення
+		const lastChar = inputValue.slice(-1);
+		if (processedValue.match(/[.÷×+-]/) && lastChar.match(/[.÷×+-]/)) {
+			return; // останній символ та новий символ - оператори, не добавляємо новий
+		}
+	
+		setInputValue(prevValue => prevValue.concat(processedValue));
+	}
 
     const clear = () => {
         setInputValue('');
@@ -60,7 +67,7 @@ function App() {
                         value={inputValue} 
                         onChange={(e) => setInputValue(e.target.value)} 
                         className='blinking-caret'
-                        ref={inputRef} // Передаем реф
+                        ref={inputRef} // Передаємо реф
                     />
                     <input type='text' value={result} readOnly />
                 </div>
