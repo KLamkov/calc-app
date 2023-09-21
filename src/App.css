@@ -20,14 +20,12 @@ body {
 	margin: 0 auto;
 	width: 60%;
 	max-width: 414px;
-	min-width: 200px;
 	text-align: center;
 	background:  #1b1b1b;
 }
 
 .input-container {
 	background-color: #2d3339;
-	height: 150px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
@@ -52,6 +50,7 @@ input:first-child{
 	font-weight: 500;
 	font-size: 45px;
 	caret-color: #8caed7;
+	margin-top: 20%;
 }
 input:last-child {
 	caret-color: transparent;
@@ -102,12 +101,7 @@ input:last-child {
 }
 
 @media (min-width: 415px) {
-	.container{
-		min-width: 415px;
-	}
-	.input-container {
-		height: 250px;	
-	}
+	
 	input:first-child{
 		font-weight: 500;
 		font-size: 80px;
@@ -116,18 +110,102 @@ input:last-child {
 		font-size: 70px;
 	  }
     .keypad button {
-        width: 85px;
         height: 85px; 
 		font-size: 45px;
-		font-weight: 500;
     }
 	.keypad button.AC {
 		border-radius: 40px;
-		width: 285px;
 	}
 	.keypad button.zero {
 		border-radius: 40px; 
-		width: 185px;
 	}
 
 }
+
+@media (min-width: 377px) and (max-width: 414px){
+	.container {
+		width: 100%;
+	}
+	
+	input:first-child{
+		font-size: 65px;
+	}
+
+	input:last-child {
+		font-size: 60px;
+	  }
+	
+	.keypad button {
+		height: 90px;
+		font-size: 45px;	
+	}
+	
+	.keypad button.AC {
+		border-radius: 40px;
+	}
+	
+	.keypad button.zero {
+		border-radius: 40px; 
+	}
+}
+
+@media (min-width: 330px) and (max-width: 376px){
+	.container {
+		width: 100%;
+	}
+	
+	input:first-child{
+		font-size: 60px;
+	}
+
+	input:last-child {
+		font-size: 55px;
+	  }
+	
+	.keypad button {
+		height: 77px;
+		font-size: 40px;
+	}
+	
+	.keypad button.AC {
+		border-radius: 40px;
+	}
+	
+	.keypad button.zero {
+		border-radius: 40px; 
+	}
+}
+
+@media (max-width: 330px){
+	.container {
+		width: 100%;
+	}
+	
+	input:first-child{
+		font-size: 50px;
+	}
+
+	input:last-child {
+		font-size: 45px;
+	  }
+	
+	.keypad button {
+		height: 65px;
+		font-size: 35px;
+	}
+	
+	.keypad button.AC {
+		border-radius: 35px;
+	}
+	
+	.keypad button.zero {
+		border-radius: 35px; 
+	}
+}
+
+@media (max-height: 730px) and (orientation: landscape) {
+	.container{
+	  height: 100vh;
+	  overflow-y: scroll;
+	}
+  }

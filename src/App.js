@@ -1,95 +1,70 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import { evaluate } from 'mathjs';
 import './App.css';
 
-import KeypadHandler from './components/KeypadHandler';
+import Input from './components/Input';
+import Keypad from './components/Keypad';
 
+import KeypadHandler from './utils/KeypadHandler';
 
 function App() {
     const [inputValue, setInputValue] = useState('');
     const [result, setResult] = useState('');
-	const inputRef = useRef(null);
 
-	useEffect(() => {
-        inputRef.current.focus();
+    useEffect(() => {
+        const buttons = document.querySelectorAll('.keypad button');
+        const input = document.querySelector('.blinking-caret');
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                input.focus();
+            });
+        });
     }, []); 
 
     const handleClick = (e) => {
-		const clickedValue = e.target.name;
-		const operatorMap = {
-			'/': '÷',
-			'*': '×'
-		};
-	
-		const processedValue = operatorMap[clickedValue] || clickedValue;
-	
-		// перевірка останнього значення
-		const lastChar = inputValue.slice(-1);
-		if (processedValue.match(/[.÷×+-]/) && lastChar.match(/[.÷×+-]/)) {
-			return; // останній символ та новий символ - оператори, не добавляємо новий
-		}
-	
-		setInputValue(prevValue => prevValue.concat(processedValue));
-	}
+        const clickedValue = e.target.name;
+        const operatorMap = {
+            '/': '÷',
+            '*': '×'
+        };
+
+        const processedValue = operatorMap[clickedValue] || clickedValue;
+
+        // перевірка останнього значення
+        const lastChar = inputValue.slice(-1);
+        if (processedValue.match(/[.÷×+-]/) && lastChar.match(/[.÷×+-]/)) {
+            return; // останній символ та новий символ - оператори, не добавляємо новий
+        }
+
+        setInputValue(prevValue => prevValue.concat(processedValue));
+    }
 
     const clear = () => {
         setInputValue('');
         setResult('');
     }
 
-	const calculate = () => {
-		try {
-			const updatedInput = inputValue.replace(/÷/g, '/').replace(/×/g, '*');
-			const rawResult = evaluate(updatedInput);
-			const formattedResult = Number.isInteger(rawResult) ? rawResult : rawResult.toFixed(3);
-			setResult(formattedResult.toString());
-		} catch(err) {
-			setResult('Error');
-			setInputValue('');
-		}
-	}
-
-	const buttons = document.querySelectorAll('.keypad button');
-    const input = document.querySelector('.blinking-caret'); 
-
-    buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-            input.focus();
-        });
-    });
+    const calculate = () => {
+        try {
+            const updatedInput = inputValue.replace(/÷/g, '/').replace(/×/g, '*');
+            const rawResult = evaluate(updatedInput);
+            const formattedResult = Number.isInteger(rawResult) ? rawResult : rawResult.toFixed(3);
+            setResult(formattedResult.toString());
+        } catch(err) {
+            setResult('Error');
+            setInputValue('');
+        }
+    }
 
     return (
         <>
             <div className='container'>
-				<div className='input-container'>
-                    <input 
-                        type='text' 
-                        value={inputValue} 
-                        onChange={(e) => setInputValue(e.target.value)} 
-                        className='blinking-caret'
-                        ref={inputRef} // Передаємо реф
-                    />
+                <div className='input-container'>
+                    <Input value={inputValue} onChange={setInputValue} />
                     <input type='text' value={result} readOnly />
                 </div>
-                <div className='keypad'>
-                    <button name='' onClick={clear} id="clear" className='AC'>AC</button>
-                    <button name='/' onClick={handleClick} className='operator'>÷</button>
-                    <button name='7' onClick={handleClick}>7</button>
-                    <button name='8' onClick={handleClick}>8</button>
-                    <button name='9' onClick={handleClick}>9</button>
-                    <button name='*' onClick={handleClick} className='operator'>×</button>
-                    <button name='4' onClick={handleClick}>4</button>
-                    <button name='5' onClick={handleClick}>5</button>
-                    <button name='6' onClick={handleClick}>6</button>
-                    <button name='-' onClick={handleClick} className='operator'>-</button>
-                    <button name='1' onClick={handleClick}>1</button>
-                    <button name='2' onClick={handleClick}>2</button>
-                    <button name='3' onClick={handleClick}>3</button>
-                    <button name='+' onClick={handleClick} className='operator'>+</button>
-                    <button name='0' onClick={handleClick} className='zero'>0</button>
-                    <button name='.' onClick={handleClick}>'</button>
-                    <button name='=' onClick={calculate} className='equal'>=</button>
-                </div>
+                <Keypad handleClick={handleClick} clear={clear} calculate={calculate} />
             </div>
             <KeypadHandler inputValue={inputValue} setInputValue={setInputValue} calculate={calculate} />
         </>
